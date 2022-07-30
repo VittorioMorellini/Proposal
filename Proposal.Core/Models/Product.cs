@@ -23,8 +23,16 @@ namespace Proposal.Core.Models
         public string? UpdateUser { get; set; }
         public long? CategoryId { get; set; }
         public DateTime? ExpirationDate { get; set; }
+        public DateTime? Disabled { get; set; }
+        public string? Brand { get; set; }
+        public long? SupplierId { get; set; }
+        /// <summary>
+        /// the unit is days to reorder
+        /// </summary>
+        public int? ReorderLeadDays { get; set; }
 
         public virtual Category? Category { get; set; }
+        public virtual Supplier? Supplier { get; set; }
         public virtual ICollection<OrderDetail> OrderDetail { get; set; }
         public virtual ICollection<ProductState> ProductState { get; set; }
         public virtual ICollection<ProductStoreMovement> ProductStoreMovement { get; set; }

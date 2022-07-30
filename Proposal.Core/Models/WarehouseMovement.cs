@@ -26,8 +26,11 @@ namespace Proposal.Core.Models
         /// Good that is a return from customer
         /// </summary>
         public long? CustomerId { get; set; }
+        public long? LocationFrom { get; set; }
+        public long LocationTo { get; set; }
 
         public virtual Customer? Customer { get; set; }
+        public virtual Location LocationToNavigation { get; set; } = null!;
         public virtual Product Product { get; set; } = null!;
         public virtual Supplier? Supplier { get; set; }
         public virtual Warehouse? WarehouseIdFromNavigation { get; set; }

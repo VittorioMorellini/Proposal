@@ -7,6 +7,7 @@ namespace Proposal.Core.Models
     {
         public Warehouse()
         {
+            Location = new HashSet<Location>();
             Store = new HashSet<Store>();
             WarehouseMovementWarehouseIdFromNavigation = new HashSet<WarehouseMovement>();
             WarehouseMovementWarehouseIdToNavigation = new HashSet<WarehouseMovement>();
@@ -21,6 +22,7 @@ namespace Proposal.Core.Models
         public DateTime? UpdateDate { get; set; }
 
         public virtual WarehouseType? WarehouseType { get; set; }
+        public virtual ICollection<Location> Location { get; set; }
         public virtual ICollection<Store> Store { get; set; }
         public virtual ICollection<WarehouseMovement> WarehouseMovementWarehouseIdFromNavigation { get; set; }
         public virtual ICollection<WarehouseMovement> WarehouseMovementWarehouseIdToNavigation { get; set; }

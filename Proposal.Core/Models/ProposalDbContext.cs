@@ -18,6 +18,7 @@ namespace Proposal.Core.Models
 
         public virtual DbSet<Category> Category { get; set; } = null!;
         public virtual DbSet<Customer> Customer { get; set; } = null!;
+        public virtual DbSet<Location> Location { get; set; } = null!;
         public virtual DbSet<Order> Order { get; set; } = null!;
         public virtual DbSet<OrderDetail> OrderDetail { get; set; } = null!;
         public virtual DbSet<Principal> Principal { get; set; } = null!;
@@ -149,6 +150,27 @@ namespace Proposal.Core.Models
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<Location>(entity =>
+            {
+                entity.Property(e => e.BarCode)
+                    .HasMaxLength(24)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Code)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Description)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Warehouse)
+                    .WithMany(p => p.Location)
+                    .HasForeignKey(d => d.WarehouseId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Location_Warehouse");
+            });
+
             modelBuilder.Entity<Order>(entity =>
             {
                 entity.Property(e => e.Date).HasColumnType("datetime");
@@ -272,6 +294,10 @@ namespace Proposal.Core.Models
 
             modelBuilder.Entity<Product>(entity =>
             {
+                entity.Property(e => e.Brand)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Code)
                     .HasMaxLength(100)
                     .IsUnicode(false);
@@ -279,6 +305,8 @@ namespace Proposal.Core.Models
                 entity.Property(e => e.Description)
                     .HasMaxLength(100)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Disabled).HasColumnType("datetime");
 
                 entity.Property(e => e.ExpirationDate).HasColumnType("datetime");
 
@@ -289,6 +317,8 @@ namespace Proposal.Core.Models
                 entity.Property(e => e.InsertUser)
                     .HasMaxLength(100)
                     .IsUnicode(false);
+
+                entity.Property(e => e.ReorderLeadDays).HasComment("the unit is days to reorder");
 
                 entity.Property(e => e.UpdateDate)
                     .HasColumnType("datetime")
@@ -302,12 +332,19 @@ namespace Proposal.Core.Models
                     .WithMany(p => p.Product)
                     .HasForeignKey(d => d.CategoryId)
                     .HasConstraintName("FK_Product_Category");
+
+                entity.HasOne(d => d.Supplier)
+                    .WithMany(p => p.Product)
+                    .HasForeignKey(d => d.SupplierId)
+                    .HasConstraintName("FK_Product_Supplier");
             });
 
             modelBuilder.Entity<ProductState>(entity =>
             {
-                entity.Property(e => e.Description)
-                    .HasMaxLength(100)
+                entity.Property(e => e.Date).HasColumnType("datetime");
+
+                entity.Property(e => e.State)
+                    .HasMaxLength(20)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.Product)
@@ -463,6 +500,12 @@ namespace Proposal.Core.Models
                     .WithMany(p => p.WarehouseMovement)
                     .HasForeignKey(d => d.CustomerId)
                     .HasConstraintName("FK_WarehouseMovement_Customer");
+
+                entity.HasOne(d => d.LocationToNavigation)
+                    .WithMany(p => p.WarehouseMovement)
+                    .HasForeignKey(d => d.LocationTo)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_WarehouseMovement_Location");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.WarehouseMovement)
