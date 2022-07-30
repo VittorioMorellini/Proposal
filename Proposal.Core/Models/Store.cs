@@ -8,7 +8,7 @@ namespace Proposal.Core.Models
         public Store()
         {
             Order = new HashSet<Order>();
-            ProductStoreMove = new HashSet<ProductStoreMove>();
+            ProductStoreMovement = new HashSet<ProductStoreMovement>();
         }
 
         public long Id { get; set; }
@@ -24,6 +24,6 @@ namespace Proposal.Core.Models
 
         public virtual Warehouse Warehouse { get; set; } = null!;
         public virtual ICollection<Order> Order { get; set; }
-        public virtual ICollection<ProductStoreMove> ProductStoreMove { get; set; }
+        public virtual ICollection<ProductStoreMovement> ProductStoreMovement { get; set; }
     }
 }

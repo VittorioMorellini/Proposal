@@ -8,7 +8,8 @@ namespace Proposal.Core.Models
         public Customer()
         {
             Order = new HashSet<Order>();
-            ProductStoreMove = new HashSet<ProductStoreMove>();
+            ProductStoreMovement = new HashSet<ProductStoreMovement>();
+            WarehouseMovement = new HashSet<WarehouseMovement>();
         }
 
         public long Id { get; set; }
@@ -43,6 +44,7 @@ namespace Proposal.Core.Models
         public DateTime? Disabled { get; set; }
 
         public virtual ICollection<Order> Order { get; set; }
-        public virtual ICollection<ProductStoreMove> ProductStoreMove { get; set; }
+        public virtual ICollection<ProductStoreMovement> ProductStoreMovement { get; set; }
+        public virtual ICollection<WarehouseMovement> WarehouseMovement { get; set; }
     }
 }

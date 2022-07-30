@@ -17,6 +17,7 @@ namespace Proposal.Core.Services
 
     public class ProductService : BaseService<Product, long, ProposalDbContext>, IProductService
     {
+        //Dependency Injection for all the component I need
         private readonly ILogger<ProductService> logger;
         public ProductService(ILogger<ProductService> logger, ProposalDbContext ctx = null)
             : base(ctx)
@@ -24,6 +25,11 @@ namespace Proposal.Core.Services
             this.logger = logger;
         }
 
+        /// <summary>
+        /// Override example to customize a Method
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public override Product Find(long id)
         {
             var product = ctx.Product
@@ -32,6 +38,11 @@ namespace Proposal.Core.Services
             return product;
         }
 
+        /// <summary>
+        /// Example of search called with a Post
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public IEnumerable<Product> Search(ProductSearchModel model)
         {
             var query = ctx.Product.AsQueryable();
@@ -41,16 +52,18 @@ namespace Proposal.Core.Services
             if (!string.IsNullOrWhiteSpace(model.Description))
                 query = query.Where(x => x.Description.StartsWith(model.Description));
 
+            //Paging Server side
+            query = query.ApplyPaging(model);
+            
             return query.ToList();
         }
     }
 
-    public class ProductSearchModel
+    public class ProductSearchModel : QueryBuilderSearchModel
     {
-        public long? FlowId { get; set; }
-        public long? CertificateId { get; set; }
+        public long? ProductStateId { get; set; }
+        public string ProductState { get; set; }
         public string Code { get; set; }
         public string Description { get; set; }
-        public bool? Disabled { get; set; }
     }
 }

@@ -23,8 +23,9 @@ namespace Proposal.Core.Models
         public virtual DbSet<Principal> Principal { get; set; } = null!;
         public virtual DbSet<Product> Product { get; set; } = null!;
         public virtual DbSet<ProductState> ProductState { get; set; } = null!;
-        public virtual DbSet<ProductStoreMove> ProductStoreMove { get; set; } = null!;
+        public virtual DbSet<ProductStoreMovement> ProductStoreMovement { get; set; } = null!;
         public virtual DbSet<Store> Store { get; set; } = null!;
+        public virtual DbSet<Supplier> Supplier { get; set; } = null!;
         public virtual DbSet<Warehouse> Warehouse { get; set; } = null!;
         public virtual DbSet<WarehouseMovement> WarehouseMovement { get; set; } = null!;
         public virtual DbSet<WarehouseType> WarehouseType { get; set; } = null!;
@@ -150,7 +151,15 @@ namespace Proposal.Core.Models
 
             modelBuilder.Entity<Order>(entity =>
             {
-                entity.Property(e => e.PurchaseDate).HasColumnType("datetime");
+                entity.Property(e => e.Date).HasColumnType("datetime");
+
+                entity.Property(e => e.DeliveryAddress)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.DeliveryCity)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
 
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Order)
@@ -308,25 +317,25 @@ namespace Proposal.Core.Models
                     .HasConstraintName("FK_ProductState_Product");
             });
 
-            modelBuilder.Entity<ProductStoreMove>(entity =>
+            modelBuilder.Entity<ProductStoreMovement>(entity =>
             {
                 entity.Property(e => e.CustomerId).HasComment("is not null if this is a return form a customer");
 
                 entity.Property(e => e.MoveDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Customer)
-                    .WithMany(p => p.ProductStoreMove)
+                    .WithMany(p => p.ProductStoreMovement)
                     .HasForeignKey(d => d.CustomerId)
                     .HasConstraintName("FK_ProductStoreMove_Customer");
 
                 entity.HasOne(d => d.Product)
-                    .WithMany(p => p.ProductStoreMove)
+                    .WithMany(p => p.ProductStoreMovement)
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ProductStore_Product");
 
                 entity.HasOne(d => d.Store)
-                    .WithMany(p => p.ProductStoreMove)
+                    .WithMany(p => p.ProductStoreMovement)
                     .HasForeignKey(d => d.StoreId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ProductStore_Store");
@@ -371,6 +380,29 @@ namespace Proposal.Core.Models
                     .HasForeignKey(d => d.WarehouseId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Store_Warehouse");
+            });
+
+            modelBuilder.Entity<Supplier>(entity =>
+            {
+                entity.Property(e => e.Address)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.BusinessName)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.City)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Code)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Country)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Warehouse>(entity =>
@@ -419,7 +451,7 @@ namespace Proposal.Core.Models
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
-                entity.Property(e => e.PurchaseId).HasComment("Good that become from a supplier");
+                entity.Property(e => e.SupplierId).HasComment("Good that become from a supplier");
 
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
@@ -427,11 +459,21 @@ namespace Proposal.Core.Models
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
+                entity.HasOne(d => d.Customer)
+                    .WithMany(p => p.WarehouseMovement)
+                    .HasForeignKey(d => d.CustomerId)
+                    .HasConstraintName("FK_WarehouseMovement_Customer");
+
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.WarehouseMovement)
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_WarehouseMovement_Product");
+
+                entity.HasOne(d => d.Supplier)
+                    .WithMany(p => p.WarehouseMovement)
+                    .HasForeignKey(d => d.SupplierId)
+                    .HasConstraintName("FK_WarehouseMovement_Supplier");
 
                 entity.HasOne(d => d.WarehouseIdFromNavigation)
                     .WithMany(p => p.WarehouseMovementWarehouseIdFromNavigation)

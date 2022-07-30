@@ -12,8 +12,10 @@ namespace Proposal.Core.Models
 
         public long Id { get; set; }
         public long StoreId { get; set; }
-        public DateTime? PurchaseDate { get; set; }
+        public DateTime? Date { get; set; }
         public long? CustomerId { get; set; }
+        public string? DeliveryAddress { get; set; }
+        public string? DeliveryCity { get; set; }
 
         public virtual Customer? Customer { get; set; }
         public virtual Store Store { get; set; } = null!;
