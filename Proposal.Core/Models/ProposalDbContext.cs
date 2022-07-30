@@ -21,6 +21,7 @@ namespace Proposal.Core.Models
         public virtual DbSet<OrderDetail> OrderDetail { get; set; } = null!;
         public virtual DbSet<Principal> Principal { get; set; } = null!;
         public virtual DbSet<Product> Product { get; set; } = null!;
+        public virtual DbSet<ProductState> ProductState { get; set; } = null!;
         public virtual DbSet<ProductStoreMove> ProductStoreMove { get; set; } = null!;
         public virtual DbSet<Store> Store { get; set; } = null!;
         public virtual DbSet<Warehouse> Warehouse { get; set; } = null!;
@@ -185,6 +186,20 @@ namespace Proposal.Core.Models
                     .WithMany(p => p.Product)
                     .HasForeignKey(d => d.CategoryId)
                     .HasConstraintName("FK_Product_Category");
+
+                entity.HasOne(d => d.ProductState)
+                    .WithMany(p => p.Product)
+                    .HasForeignKey(d => d.ProductStateId)
+                    .HasConstraintName("FK_Product_ProductState");
+            });
+
+            modelBuilder.Entity<ProductState>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Description)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<ProductStoreMove>(entity =>
