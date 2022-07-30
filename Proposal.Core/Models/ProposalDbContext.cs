@@ -17,6 +17,7 @@ namespace Proposal.Core.Models
         }
 
         public virtual DbSet<Category> Category { get; set; } = null!;
+        public virtual DbSet<Customer> Customer { get; set; } = null!;
         public virtual DbSet<Order> Order { get; set; } = null!;
         public virtual DbSet<OrderDetail> OrderDetail { get; set; } = null!;
         public virtual DbSet<Principal> Principal { get; set; } = null!;
@@ -46,9 +47,115 @@ namespace Proposal.Core.Models
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<Customer>(entity =>
+            {
+                entity.Property(e => e.Address)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.BirthDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Cap)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.City)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ContactDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Country)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Disabled).HasColumnType("datetime");
+
+                entity.Property(e => e.District)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FirstName)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.IdentificationDocCountry)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.IdentificationDocExpirationDate).HasColumnType("datetime");
+
+                entity.Property(e => e.IdentificationDocNumber)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.IdentificationDocReleaseDate).HasColumnType("datetime");
+
+                entity.Property(e => e.IdentificationDocType)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.InsertDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.InsertUser)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LastName)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Mail)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.MobilePhone)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Notes).IsUnicode(false);
+
+                entity.Property(e => e.Phone)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.RecallDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Sex)
+                    .HasMaxLength(1)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.TaxCode)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Type)
+                    .HasMaxLength(1)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.UpdateUser)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.VatCode)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<Order>(entity =>
             {
                 entity.Property(e => e.PurchaseDate).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Customer)
+                    .WithMany(p => p.Order)
+                    .HasForeignKey(d => d.CustomerId)
+                    .HasConstraintName("FK_Order_Customer");
 
                 entity.HasOne(d => d.Store)
                     .WithMany(p => p.Order)
@@ -186,25 +293,31 @@ namespace Proposal.Core.Models
                     .WithMany(p => p.Product)
                     .HasForeignKey(d => d.CategoryId)
                     .HasConstraintName("FK_Product_Category");
-
-                entity.HasOne(d => d.ProductState)
-                    .WithMany(p => p.Product)
-                    .HasForeignKey(d => d.ProductStateId)
-                    .HasConstraintName("FK_Product_ProductState");
             });
 
             modelBuilder.Entity<ProductState>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.Description)
                     .HasMaxLength(100)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.ProductState)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_ProductState_Product");
             });
 
             modelBuilder.Entity<ProductStoreMove>(entity =>
             {
+                entity.Property(e => e.CustomerId).HasComment("is not null if this is a return form a customer");
+
                 entity.Property(e => e.MoveDate).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Customer)
+                    .WithMany(p => p.ProductStoreMove)
+                    .HasForeignKey(d => d.CustomerId)
+                    .HasConstraintName("FK_ProductStoreMove_Customer");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.ProductStoreMove)
@@ -286,6 +399,8 @@ namespace Proposal.Core.Models
 
             modelBuilder.Entity<WarehouseMovement>(entity =>
             {
+                entity.Property(e => e.CustomerId).HasComment("Good that is a return from customer");
+
                 entity.Property(e => e.DeleteDate).HasColumnType("datetime");
 
                 entity.Property(e => e.DeleteUser)
@@ -303,6 +418,8 @@ namespace Proposal.Core.Models
                 entity.Property(e => e.Notes)
                     .HasMaxLength(255)
                     .IsUnicode(false);
+
+                entity.Property(e => e.PurchaseId).HasComment("Good that become from a supplier");
 
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 

@@ -8,6 +8,7 @@ namespace Proposal.Core.Models
         public Product()
         {
             OrderDetail = new HashSet<OrderDetail>();
+            ProductState = new HashSet<ProductState>();
             ProductStoreMove = new HashSet<ProductStoreMove>();
             WarehouseMovement = new HashSet<WarehouseMovement>();
         }
@@ -22,11 +23,10 @@ namespace Proposal.Core.Models
         public string? UpdateUser { get; set; }
         public long? CategoryId { get; set; }
         public DateTime? ExpirationDate { get; set; }
-        public int? ProductStateId { get; set; }
 
         public virtual Category? Category { get; set; }
-        public virtual ProductState? ProductState { get; set; }
         public virtual ICollection<OrderDetail> OrderDetail { get; set; }
+        public virtual ICollection<ProductState> ProductState { get; set; }
         public virtual ICollection<ProductStoreMove> ProductStoreMove { get; set; }
         public virtual ICollection<WarehouseMovement> WarehouseMovement { get; set; }
     }

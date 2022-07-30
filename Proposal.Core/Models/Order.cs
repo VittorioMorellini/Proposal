@@ -15,6 +15,7 @@ namespace Proposal.Core.Models
         public DateTime? PurchaseDate { get; set; }
         public long? CustomerId { get; set; }
 
+        public virtual Customer? Customer { get; set; }
         public virtual Store Store { get; set; } = null!;
         public virtual ICollection<OrderDetail> OrderDetail { get; set; }
     }

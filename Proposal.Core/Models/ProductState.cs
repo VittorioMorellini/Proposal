@@ -5,14 +5,10 @@ namespace Proposal.Core.Models
 {
     public partial class ProductState
     {
-        public ProductState()
-        {
-            Product = new HashSet<Product>();
-        }
-
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Description { get; set; } = null!;
+        public long? ProductId { get; set; }
 
-        public virtual ICollection<Product> Product { get; set; }
+        public virtual Product? Product { get; set; }
     }
 }

@@ -11,13 +11,21 @@ namespace Proposal.Core.Models
         public DateTime? MovementDate { get; set; }
         public long ProductId { get; set; }
         public int? Quantity { get; set; }
-        public string? InsertUser { get; set; }
-        public DateTime? InsertDate { get; set; }
-        public string? UpdateUser { get; set; }
-        public DateTime? UpdateDate { get; set; }
+        public string InsertUser { get; set; } = null!;
+        public DateTime InsertDate { get; set; }
+        public string UpdateUser { get; set; } = null!;
+        public DateTime UpdateDate { get; set; }
         public string? DeleteUser { get; set; }
         public DateTime? DeleteDate { get; set; }
         public string? Notes { get; set; }
+        /// <summary>
+        /// Good that become from a supplier
+        /// </summary>
+        public long? PurchaseId { get; set; }
+        /// <summary>
+        /// Good that is a return from customer
+        /// </summary>
+        public long? CustomerId { get; set; }
 
         public virtual Product Product { get; set; } = null!;
         public virtual Warehouse? WarehouseIdFromNavigation { get; set; }
