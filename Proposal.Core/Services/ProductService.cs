@@ -33,6 +33,8 @@ namespace Proposal.Core.Services
         public override Product Find(long id)
         {
             var product = ctx.Product
+                .AsSplitQuery()
+                .Include(x => x.ProductOperation)
                 .Where(x => x.Id == id).FirstOrDefault();
 
             return product;

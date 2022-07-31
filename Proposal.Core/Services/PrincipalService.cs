@@ -30,7 +30,6 @@ namespace Proposal.Core.Services
         public override Principal Find(long id)
         {   
             return ctx.Principal
-                .AsSplitQuery()
                 .Where(x => x.Id == id).FirstOrDefault();
         }
 
