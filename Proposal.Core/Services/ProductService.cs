@@ -48,15 +48,21 @@ namespace Proposal.Core.Services
         public IEnumerable<Product> Search(ProductSearchModel model)
         {
             var query = ctx.Product.AsQueryable();
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(model.Code))
+                    query = query.Where(x => x.Code.StartsWith(model.Code));
+                if (!string.IsNullOrWhiteSpace(model.Description))
+                    query = query.Where(x => x.Description.StartsWith(model.Description));
 
-            if (!string.IsNullOrWhiteSpace(model.Code))
-                query = query.Where(x => x.Code.StartsWith(model.Code));
-            if (!string.IsNullOrWhiteSpace(model.Description))
-                query = query.Where(x => x.Description.StartsWith(model.Description));
-
-            //Paging Server side
-            query = query.ApplyPaging(model);
-            
+                //Paging Server side
+                query = query.ApplyPaging(model);
+            }
+            catch(Exception ex)
+            {
+                logger.LogError("Error in Search procutService", ex);
+                throw;
+            }
             return query.ToList();
         }
     }
