@@ -19,11 +19,12 @@ namespace Proposal.Core.Models
         public virtual DbSet<Category> Category { get; set; } = null!;
         public virtual DbSet<Customer> Customer { get; set; } = null!;
         public virtual DbSet<Location> Location { get; set; } = null!;
+        public virtual DbSet<Lot> Lot { get; set; } = null!;
         public virtual DbSet<Order> Order { get; set; } = null!;
         public virtual DbSet<OrderDetail> OrderDetail { get; set; } = null!;
         public virtual DbSet<Principal> Principal { get; set; } = null!;
         public virtual DbSet<Product> Product { get; set; } = null!;
-        public virtual DbSet<ProductState> ProductState { get; set; } = null!;
+        public virtual DbSet<ProductOperation> ProductOperation { get; set; } = null!;
         public virtual DbSet<ProductStoreMovement> ProductStoreMovement { get; set; } = null!;
         public virtual DbSet<PurchaseOrder> PurchaseOrder { get; set; } = null!;
         public virtual DbSet<Store> Store { get; set; } = null!;
@@ -170,6 +171,26 @@ namespace Proposal.Core.Models
                     .HasForeignKey(d => d.WarehouseId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Location_Warehouse");
+            });
+
+            modelBuilder.Entity<Lot>(entity =>
+            {
+                entity.Property(e => e.Code)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Description)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ListOfMaterial)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.PurchaseOrder)
+                    .WithMany(p => p.Lot)
+                    .HasForeignKey(d => d.PurchaseOrderId)
+                    .HasConstraintName("FK_Lot_PurchaseOrder");
             });
 
             modelBuilder.Entity<Order>(entity =>
@@ -340,19 +361,37 @@ namespace Proposal.Core.Models
                     .HasConstraintName("FK_Product_Supplier");
             });
 
-            modelBuilder.Entity<ProductState>(entity =>
+            modelBuilder.Entity<ProductOperation>(entity =>
             {
-                entity.Property(e => e.Date).HasColumnType("datetime");
+                entity.Property(e => e.DateEnd).HasColumnType("datetime");
+
+                entity.Property(e => e.DateStart).HasColumnType("datetime");
+
+                entity.Property(e => e.LotInId).HasComment("Informations about the production Lot");
 
                 entity.Property(e => e.State)
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
+                entity.HasOne(d => d.LotIn)
+                    .WithMany(p => p.ProductOperation)
+                    .HasForeignKey(d => d.LotInId)
+                    .HasConstraintName("FK_ProductOperation_Lot");
+
                 entity.HasOne(d => d.Product)
-                    .WithMany(p => p.ProductState)
+                    .WithMany(p => p.ProductOperation)
                     .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_ProductState_Product");
+
+                entity.HasOne(d => d.Store)
+                    .WithMany(p => p.ProductOperation)
+                    .HasForeignKey(d => d.StoreId)
+                    .HasConstraintName("FK_ProductOperation_Store");
+
+                entity.HasOne(d => d.Warehouse)
+                    .WithMany(p => p.ProductOperation)
+                    .HasForeignKey(d => d.WarehouseId)
+                    .HasConstraintName("FK_ProductOperation_Warehouse");
             });
 
             modelBuilder.Entity<ProductStoreMovement>(entity =>

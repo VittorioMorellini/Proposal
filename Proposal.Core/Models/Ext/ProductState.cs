@@ -9,10 +9,11 @@ namespace Proposal.Core.Models
     public partial class ProductState
     {
         //sTATE OF PRODUCT
-        public const string VALID = "VALID";
-        public const string EXPIRED = "EXPIRED";
+        public const string IN_PROGRESS = "IN_PROGRESS";
         public const string DAMAGED = "DAMAGED";
-        public const string OUTOFSEASON = "OUTOFSEASON";
         public const string INCORRECT = "INCORRECT";
+        public const string VALID = "VALID";
+        public const string RETURN = "RETURN";
+        public const string OUTOFSEASON = "OUTOFSEASON";
     }
 }

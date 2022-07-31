@@ -8,6 +8,7 @@ namespace Proposal.Core.Models
         public Warehouse()
         {
             Location = new HashSet<Location>();
+            ProductOperation = new HashSet<ProductOperation>();
             Store = new HashSet<Store>();
         }
 
@@ -21,6 +22,7 @@ namespace Proposal.Core.Models
 
         public virtual WarehouseType? WarehouseType { get; set; }
         public virtual ICollection<Location> Location { get; set; }
+        public virtual ICollection<ProductOperation> ProductOperation { get; set; }
         public virtual ICollection<Store> Store { get; set; }
     }
 }

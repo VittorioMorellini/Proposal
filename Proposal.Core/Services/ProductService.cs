@@ -62,8 +62,8 @@ namespace Proposal.Core.Services
     public class ProductSearchModel : QueryBuilderSearchModel
     {
         public long? ProductStateId { get; set; }
-        public string ProductState { get; set; }
-        public string Code { get; set; }
-        public string Description { get; set; }
+        public string? ProductState { get; set; }
+        public string? Code { get; set; }
+        public string? Description { get; set; }
     }
 }

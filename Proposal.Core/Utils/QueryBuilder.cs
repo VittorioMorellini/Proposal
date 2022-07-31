@@ -11,20 +11,6 @@ namespace Proposal.Core.Utils
     {
         public static string ApplyPaging(this string query, QueryBuilderSearchModel model)
         {
-            //if (!string.IsNullOrWhiteSpace(model.OrderBy))
-            //    query += $" order by {model.OrderBy}";
-
-            //if (model.Skip != null || model.Take != null)
-            //{
-            //    if (string.IsNullOrWhiteSpace(model.OrderBy))
-            //        throw new Exception("OrderBy must be defined when using Skip/Take");
-
-            //    if (model.Skip != null)
-            //        query += $" offset {model.Skip.GetValueOrDefault()} rows";
-            //    if (model.Take != null)
-            //        query += $" fetch next {model.Take.GetValueOrDefault()} rows only";
-            //}
-
             if (model.Pager != null && !model.Pager.Ignore)
             {
                 if (!string.IsNullOrWhiteSpace(model.Pager.OrderBy))
@@ -90,10 +76,6 @@ namespace Proposal.Core.Utils
 
     public class QueryBuilderSearchModel
     {
-        //public int? Skip { get; set; }
-        //public int? Take { get; set; }        
-        //public string OrderBy { get; set; }
-
         public PagerModel Pager { get; set; } = new PagerModel();
     }
 

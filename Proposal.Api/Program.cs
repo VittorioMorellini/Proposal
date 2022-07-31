@@ -1,7 +1,7 @@
 var builder = WebApplication.CreateBuilder(args);
 Microsoft.Extensions.Configuration.IConfiguration configuration = builder.Configuration;
 
-//Adding Serilog
+//Adding Serilog to log to a Sync selected
 var logger = new LoggerConfiguration()
                .MinimumLevel.Information()
                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)

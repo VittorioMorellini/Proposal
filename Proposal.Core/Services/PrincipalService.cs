@@ -47,9 +47,10 @@ namespace Proposal.Core.Services
                 query = query.Where(x => x.Username.StartsWith(model.Username));
             if (!string.IsNullOrWhiteSpace(model.Role))
                 query = query.Where(x => x.Role == model.Role);
-            //if (model.Disabled.HasValue)
-            //    query = query.Where(x => model.Disabled.Value == true ? x.Disabled != null : x.Disabled == null);
 
+            //Paging Server side
+            query = query.ApplyPaging(model);
+            
             return query.ToList();
         }
 
@@ -61,14 +62,14 @@ namespace Proposal.Core.Services
 
     }
 
-    public class PrincipalSearchModel
+    public class PrincipalSearchModel : QueryBuilderSearchModel
     {
-        public string Surname { get; set; }
-        public string Name { get; set; }
-        public string Username { get; set; }
-        public string Phone { get; set; }
-        public string Mail { get; set; }
-        public string Role { get; set; }
+        public string? Surname { get; set; }
+        public string? Name { get; set; }
+        public string? Username { get; set; }
+        public string? Phone { get; set; }
+        public string? Mail { get; set; }
+        public string? Role { get; set; }
         public bool? Disabled { get; set; }
     }
 
