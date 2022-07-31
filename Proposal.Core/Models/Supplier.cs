@@ -8,7 +8,6 @@ namespace Proposal.Core.Models
         public Supplier()
         {
             Product = new HashSet<Product>();
-            WarehouseMovement = new HashSet<WarehouseMovement>();
         }
 
         public long Id { get; set; }
@@ -19,6 +18,5 @@ namespace Proposal.Core.Models
         public string? Country { get; set; }
 
         public virtual ICollection<Product> Product { get; set; }
-        public virtual ICollection<WarehouseMovement> WarehouseMovement { get; set; }
     }
 }

@@ -25,6 +25,7 @@ namespace Proposal.Core.Models
         public virtual DbSet<Product> Product { get; set; } = null!;
         public virtual DbSet<ProductState> ProductState { get; set; } = null!;
         public virtual DbSet<ProductStoreMovement> ProductStoreMovement { get; set; } = null!;
+        public virtual DbSet<PurchaseOrder> PurchaseOrder { get; set; } = null!;
         public virtual DbSet<Store> Store { get; set; } = null!;
         public virtual DbSet<Supplier> Supplier { get; set; } = null!;
         public virtual DbSet<Warehouse> Warehouse { get; set; } = null!;
@@ -378,6 +379,15 @@ namespace Proposal.Core.Models
                     .HasConstraintName("FK_ProductStore_Store");
             });
 
+            modelBuilder.Entity<PurchaseOrder>(entity =>
+            {
+                entity.Property(e => e.Date).HasColumnType("datetime");
+
+                entity.Property(e => e.Product)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<Store>(entity =>
             {
                 entity.Property(e => e.City)
@@ -488,8 +498,6 @@ namespace Proposal.Core.Models
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
-                entity.Property(e => e.SupplierId).HasComment("Good that become from a supplier");
-
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.UpdateUser)
@@ -501,11 +509,16 @@ namespace Proposal.Core.Models
                     .HasForeignKey(d => d.CustomerId)
                     .HasConstraintName("FK_WarehouseMovement_Customer");
 
+                entity.HasOne(d => d.LocationFromNavigation)
+                    .WithMany(p => p.WarehouseMovementLocationFromNavigation)
+                    .HasForeignKey(d => d.LocationFrom)
+                    .HasConstraintName("FK_WarehouseMovement_LocationFrom");
+
                 entity.HasOne(d => d.LocationToNavigation)
-                    .WithMany(p => p.WarehouseMovement)
+                    .WithMany(p => p.WarehouseMovementLocationToNavigation)
                     .HasForeignKey(d => d.LocationTo)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_WarehouseMovement_Location");
+                    .HasConstraintName("FK_WarehouseMovement_LocationTo");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.WarehouseMovement)
@@ -513,21 +526,10 @@ namespace Proposal.Core.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_WarehouseMovement_Product");
 
-                entity.HasOne(d => d.Supplier)
+                entity.HasOne(d => d.PurchaseOrder)
                     .WithMany(p => p.WarehouseMovement)
-                    .HasForeignKey(d => d.SupplierId)
-                    .HasConstraintName("FK_WarehouseMovement_Supplier");
-
-                entity.HasOne(d => d.WarehouseIdFromNavigation)
-                    .WithMany(p => p.WarehouseMovementWarehouseIdFromNavigation)
-                    .HasForeignKey(d => d.WarehouseIdFrom)
-                    .HasConstraintName("FK_WarehouseMovement_WarehouseFrom");
-
-                entity.HasOne(d => d.WarehouseIdToNavigation)
-                    .WithMany(p => p.WarehouseMovementWarehouseIdToNavigation)
-                    .HasForeignKey(d => d.WarehouseIdTo)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_WarehouseMovement_WarehouseTo");
+                    .HasForeignKey(d => d.PurchaseOrderId)
+                    .HasConstraintName("FK_WarehouseMovement_PurchaseOrder");
             });
 
             modelBuilder.Entity<WarehouseType>(entity =>
