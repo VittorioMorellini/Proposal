@@ -15,7 +15,9 @@ namespace Proposal.Core.Models
         public string? Description { get; set; }
         [NotMapped]
         public int Charge { get; set; }
+        [NotMapped]
         public int OrderObligation { get; set; }
+        [NotMapped]
         public int Balance { get; set; }
         [NotMapped]
         public Product? Product { get; set; }
