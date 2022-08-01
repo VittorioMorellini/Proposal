@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Proposal.Api", "Proposal.Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Proposal.Core", "Proposal.Core\Proposal.Core.csproj", "{7E46507A-DF63-44D5-8985-75ABBB415951}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{52225101-3B0E-4900-8D31-E4336C5999CE}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
