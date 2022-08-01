@@ -398,7 +398,7 @@ namespace Proposal.Core.Models
             {
                 entity.Property(e => e.CustomerId).HasComment("is not null if this is a return form a customer");
 
-                entity.Property(e => e.MoveDate).HasColumnType("datetime");
+                entity.Property(e => e.MovementDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.ProductStoreMovement)

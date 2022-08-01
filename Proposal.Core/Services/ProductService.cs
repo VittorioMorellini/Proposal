@@ -42,13 +42,13 @@ namespace Proposal.Core.Services
         }
 
         /// <summary>
-        /// Task example to return operations of the product
+        /// Task example to return operations of the product, to trask his history and its states
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<ProductOperation>> GetOperations(long id)
+        public async Task<IEnumerable<ProductOperation>> GetOperations(long productId)
         {
-            IEnumerable<ProductOperation> result = await ctx.ProductOperation.Where(x => x.ProductId == id).ToListAsync();
+            IEnumerable<ProductOperation> result = await ctx.ProductOperation.Where(x => x.ProductId == productId).ToListAsync();
             return result;
         }
 

@@ -9,7 +9,7 @@ namespace Proposal.Core.Models
         public long ProductId { get; set; }
         public long StoreId { get; set; }
         public int Quantity { get; set; }
-        public DateTime MoveDate { get; set; }
+        public DateTime MovementDate { get; set; }
         /// <summary>
         /// is not null if this is a return form a customer
         /// </summary>

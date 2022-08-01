@@ -16,6 +16,7 @@ namespace Proposal.Core.Models
         /// </summary>
         public long? LotInId { get; set; }
         public DateTime? DateEnd { get; set; }
+
         public virtual Lot? LotIn { get; set; }
         public virtual Product Product { get; set; } = null!;
         public virtual Store? Store { get; set; }

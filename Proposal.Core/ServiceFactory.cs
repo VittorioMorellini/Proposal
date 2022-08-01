@@ -25,6 +25,7 @@ namespace Proposal.Core
 
             services.AddScoped(x => x.GetService<IServiceFactory>().Principal);
             services.AddScoped(x => x.GetService<IServiceFactory>().Product);
+            services.AddScoped(x => x.GetService<IServiceFactory>().Warehouse);
         }
     }
 
@@ -32,6 +33,7 @@ namespace Proposal.Core
     {
         IPrincipalService Principal { get; }
         IProductService Product { get; }
+        IWarehouseService Warehouse { get; }
     }
 
     public class ServiceFactory : IServiceFactory
@@ -50,6 +52,9 @@ namespace Proposal.Core
             dbContext);
         public virtual IProductService Product => new ProductService(
             (ILogger<ProductService>)provider.GetService(typeof(ILogger<ProductService>)),
+            dbContext);
+        public virtual IWarehouseService Warehouse => new WarehouseService(
+            (ILogger<WarehouseService>)provider.GetService(typeof(ILogger<WarehouseService>)),
             dbContext);
     }
 
