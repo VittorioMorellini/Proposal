@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Proposal.Core.Models
 {
-    public partial class ProductState
+    public class ProductState
     {
-        //sTATE OF PRODUCT
+        //State Of Product
         public const string IN_PROGRESS = "IN_PROGRESS";
         public const string DAMAGED = "DAMAGED";
         public const string INCORRECT = "INCORRECT";

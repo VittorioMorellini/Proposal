@@ -9,25 +9,6 @@ namespace Proposal.Core.Utils
 {
     public static class QueryBuilderExtensions
     {
-        public static string ApplyPaging(this string query, QueryBuilderSearchModel model)
-        {
-            if (model.Pager != null && !model.Pager.Ignore)
-            {
-                if (!string.IsNullOrWhiteSpace(model.Pager.OrderBy))
-                    query += $" order by {model.Pager.OrderBy}";
-
-                if (model.Pager.Skip != null || model.Pager.Take != null)
-                {
-                    query += $" order by {(string.IsNullOrWhiteSpace(model.Pager.OrderBy) ? "1" : model.Pager.OrderBy)}";
-                    query += $" offset {model.Pager.Skip.GetValueOrDefault()} rows";
-
-                    if (model.Pager.Take != null)
-                        query += $" fetch next {model.Pager.Take.GetValueOrDefault()} rows only";
-                }
-            }
-
-            return query;
-        }
 
         public static IQueryable<T> ApplyPaging<T>(this IQueryable<T> query, QueryBuilderSearchModel model)
         {

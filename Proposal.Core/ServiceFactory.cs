@@ -51,8 +51,6 @@ namespace Proposal.Core
         public virtual IProductService Product => new ProductService(
             (ILogger<ProductService>)provider.GetService(typeof(ILogger<ProductService>)),
             dbContext);
-        //public IWarehouseTypeService WarehouseType => new WarehouseTypeService(dbContext);
-        //public IWarehouseService Warehouse => new WarehouseService(dbContext);
     }
 
 }

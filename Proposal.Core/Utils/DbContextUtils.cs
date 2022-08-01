@@ -12,10 +12,6 @@ namespace Proposal.Core.Utils
 {
     public static class DbContextUtils
     {
-        static DbContextUtils()
-        {
-        }
-
         [Obsolete]
         public static void AddOrUpdate<TEntity, TKey>(this DbContext context, TKey id, TEntity entity)
             where TEntity : class
@@ -44,12 +40,12 @@ namespace Proposal.Core.Utils
             return entity;
         }
 
-        public static void save<TEntity>(this DbContext context, TEntity entity) where TEntity : class
+        public static void Save<TEntity>(this DbContext context, TEntity entity) where TEntity : class
         {
             context.BulkMerge(new TEntity[] { entity });
         }
 
-        public static void save<TEntity>(this DbContext context, IEnumerable<TEntity> entities, bool includeGraph = false) where TEntity : class
+        public static void Save<TEntity>(this DbContext context, IEnumerable<TEntity> entities, bool includeGraph = false) where TEntity : class
         {
             context.BulkMerge(entities, options => options.IncludeGraph = includeGraph);
         }
@@ -85,59 +81,5 @@ namespace Proposal.Core.Utils
 
             return status;
         }
-    }
-
-    public static class DbDataReaderUtils
-    {
-        public static string GetNullableString(this DbDataReader reader, int i)
-        {
-            object value = reader.GetValue(i);
-            return value == DBNull.Value ? null : (string)value;
-        }
-
-        public static DateTime? GetNullableDateTime(this DbDataReader reader, int i)
-        {
-            object value = reader.GetValue(i);
-            return value == DBNull.Value ? null : (DateTime?)value;
-        }
-
-        public static short? GetNullableInt16(this DbDataReader reader, int i)
-        {
-            object value = reader.GetValue(i);
-            return value == DBNull.Value ? null : (short?)value;
-        }
-
-        public static int? GetNullableInt32(this DbDataReader reader, int i)
-        {
-            object value = reader.GetValue(i);
-            return value == DBNull.Value ? null : (int?)value;
-        }
-
-        public static long? GetNullableInt64(this DbDataReader reader, int i)
-        {
-            object value = reader.GetValue(i);
-            return value == DBNull.Value ? null : (long?)value;
-        }
-
-        public static bool? GetNullableBoolean(this DbDataReader reader, int i)
-        {
-            object value = reader.GetValue(i);
-            return value == DBNull.Value ? null : (bool?)value;
-        }
-
-        public static void AddNullable(this DbParameterCollection parameters, string parName, object parValue)
-        {
-            if (parValue != null)
-                parameters.Add(new SqlParameter(parName, parValue));
-            else
-                parameters.Add(new SqlParameter(parName, DBNull.Value));
-        }
-    }
-
-    public class ServiceResponse<T>
-    {
-        public T Result { get; set; }
-        public Exception Exception { get; set; }
-        public bool Error { get { return Exception != null; } }
     }
 }

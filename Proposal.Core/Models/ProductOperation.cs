@@ -6,7 +6,7 @@ namespace Proposal.Core.Models
     public partial class ProductOperation
     {
         public long Id { get; set; }
-        public ProductState State { get; set; } = null!;
+        public string State { get; set; } = null!;
         public long ProductId { get; set; }
         public DateTime DateStart { get; set; }
         public long? WarehouseId { get; set; }
@@ -16,7 +16,6 @@ namespace Proposal.Core.Models
         /// </summary>
         public long? LotInId { get; set; }
         public DateTime? DateEnd { get; set; }
-
         public virtual Lot? LotIn { get; set; }
         public virtual Product Product { get; set; } = null!;
         public virtual Store? Store { get; set; }
