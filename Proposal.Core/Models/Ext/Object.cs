@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Proposal.Core.Models
 {
-    public class ProductState
+    public class Object
     {
         //State Of Product
         public const string IN_PROGRESS = "IN_PROGRESS";
@@ -16,4 +16,5 @@ namespace Proposal.Core.Models
         public const string RETURN = "RETURN";
         public const string OUTOFSEASON = "OUTOFSEASON";
     }
+
 }
