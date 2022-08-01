@@ -48,6 +48,20 @@ namespace Proposal.Api.Controllers
             }
         }
 
+        [HttpPost("operations")]
+        public IActionResult GetOperations(long id)
+        {
+            try
+            {
+                return new OkObjectResult(service.GetOperations(id));
+            }
+            catch (Exception ex)
+            {
+                var innerMsg = ex.InnerException != null ? (" " + ex.InnerException.Message) : "";
+                return new BadRequestObjectResult($"{ex.Message}{innerMsg}");
+            }
+        }
+        
         [HttpPost]
         public IActionResult Save([FromBody] Product item)
         {

@@ -13,6 +13,7 @@ namespace Proposal.Core.Services
     public interface IProductService : IBaseService<Product, long, ProposalDbContext>
     {
         IEnumerable<Product> Search(ProductSearchModel model);
+        Task<IEnumerable<ProductOperation>> GetOperations(long id);
     }
 
     public class ProductService : BaseService<Product, long, ProposalDbContext>, IProductService
@@ -38,6 +39,17 @@ namespace Proposal.Core.Services
                 .Where(x => x.Id == id).FirstOrDefault();
 
             return product;
+        }
+
+        /// <summary>
+        /// Task example to return operations of the product
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<ProductOperation>> GetOperations(long id)
+        {
+            IEnumerable<ProductOperation> result = await ctx.ProductOperation.Where(x => x.ProductId == id).ToListAsync();
+            return result;
         }
 
         /// <summary>
